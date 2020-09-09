@@ -4,8 +4,8 @@ import Todo from "./Todo";
 const Todos = ({ todos }) => {
   return (
     <ul className="list-group">
-      {todos.map((todo, index) => (
-        <Todo key={index} todo={todo} />
+      {todos.map((todo) => (
+        <Todo key={todo.id} todo={todo} />
       ))}
     </ul>
   );
