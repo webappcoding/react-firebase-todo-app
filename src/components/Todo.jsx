@@ -1,5 +1,5 @@
 import React from "react";
-import db from "../firebase";
+import { db } from "../firebase";
 
 const Todo = ({ todo }) => {
   const handleDelete = (e) => {
@@ -8,11 +8,11 @@ const Todo = ({ todo }) => {
   };
 
   return (
-    <li className="list-group-item d-flex justify-content-between">
-      <span>{todo.todo}</span>{" "}
+    <li className="list-group-item d-flex justify-content-between align-items-center">
+      <span>{todo.todo}</span>
       <button className="btn btn-sm btn-danger" onClick={handleDelete}>
         X
-      </button>{" "}
+      </button>
     </li>
   );
 };

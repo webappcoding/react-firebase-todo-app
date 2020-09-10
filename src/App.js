@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AddTodo from "./components/AddTodo";
 import Todos from "./components/Todos";
-import db from "./firebase";
+import { db } from "./firebase";
 function App() {
   const [todos, setTodos] = useState([]);
 
@@ -10,9 +10,6 @@ function App() {
     db.collection("todos")
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
-        // console.log(
-        //   snapshot.docs.map((doc) => ({ id: doc.id, todo: doc.data().todo }))
-        // );
         setTodos(
           snapshot.docs.map((doc) => ({ id: doc.id, todo: doc.data().todo }))
         );
