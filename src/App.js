@@ -17,10 +17,20 @@ function App() {
   }, []);
 
   return (
-    <div className="container">
-      <h1 className="h1 my-5 text-center">Web App Coding Todo App</h1>
-      <AddTodo />
-      <Todos todos={todos} />
+    <div className="d-flex flex-column overflow-hidden">
+      <header>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div className="container">
+            <a className="navbar-brand" href="/">
+              React Todo App
+            </a>
+          </div>
+        </nav>
+      </header>
+      <main className="container pt-4">
+        <AddTodo />
+        <Todos todos={todos} />
+      </main>
     </div>
   );
 }
