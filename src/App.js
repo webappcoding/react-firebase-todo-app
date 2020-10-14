@@ -1,8 +1,42 @@
 import React, { useState, useEffect } from "react";
-import AddTodo from "./components/AddTodo";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import Paper from "@material-ui/core/Paper";
+
+import MenuIcon from "@material-ui/icons/Menu";
+
+import SearchIcon from "@material-ui/icons/Search";
+import MoreIcon from "@material-ui/icons/MoreVert";
+import { Box } from "@material-ui/core";
 import Todos from "./components/Todos";
 import { db } from "./firebase";
-function App() {
+import CreateTodoPopup from "./components/CreateTodoPopup";
+
+const useStyles = makeStyles((theme) => ({
+  text: {
+    padding: theme.spacing(2, 2, 0),
+  },
+  paper: {
+    paddingBottom: 50,
+  },
+
+  subheader: {
+    backgroundColor: theme.palette.background.paper,
+  },
+  appBar: {
+    top: "auto",
+    bottom: 0,
+  },
+  grow: {
+    flexGrow: 1,
+  },
+}));
+
+export default function App() {
+  const classes = useStyles();
   const [todos, setTodos] = useState([]);
 
   // fetch data from firebase
@@ -11,28 +45,40 @@ function App() {
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
         setTodos(
-          snapshot.docs.map((doc) => ({ id: doc.id, todo: doc.data().todo }))
+          snapshot.docs.map((doc) => {
+            return { id: doc.id, ...doc.data() };
+          })
         );
       });
   }, []);
 
   return (
-    <div className="d-flex flex-column overflow-hidden">
-      <header>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div className="container">
-            <a className="navbar-brand" href="/">
-              React Todo App
-            </a>
-          </div>
-        </nav>
-      </header>
-      <main className="container pt-4">
-        <AddTodo />
+    <Box display="flex" flexDirection="column">
+      <Paper square className={classes.paper}>
+        <Typography className={classes.text} variant="h5" gutterBottom>
+          Todos
+        </Typography>
+        {/* Todos Component */}
         <Todos todos={todos} />
-      </main>
-    </div>
+      </Paper>
+      <AppBar position="fixed" color="primary" className={classes.appBar}>
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="open drawer">
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="subtitle1">React Todo App</Typography>
+          {/* Create Todo Popup */}
+          <CreateTodoPopup />
+
+          <div className={classes.grow} />
+          <IconButton color="inherit">
+            <SearchIcon />
+          </IconButton>
+          <IconButton edge="end" color="inherit">
+            <MoreIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 }
-
-export default App;
