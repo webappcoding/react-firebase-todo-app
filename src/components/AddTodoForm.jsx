@@ -1,5 +1,5 @@
 import React from "react";
-import { db, timestamp } from "../firebase";
+import db, { timestamp } from "../firebase";
 import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
 

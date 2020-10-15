@@ -1,18 +1,21 @@
 import * as firebase from "firebase/app";
 import "firebase/firestore";
+import "firebase/auth";
 
 const firebaseApp = firebase.initializeApp({
-  apiKey: "AIzaSyBmG66-YQuR3yeO696bj6lYHAdLp1i419A",
-  authDomain: "react-todo-app-9eb2c.firebaseapp.com",
-  databaseURL: "https://react-todo-app-9eb2c.firebaseio.com",
-  projectId: "react-todo-app-9eb2c",
-  storageBucket: "react-todo-app-9eb2c.appspot.com",
-  messagingSenderId: "772291225175",
-  appId: "1:772291225175:web:25d32decd850a1750e6512",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
 });
 
 const db = firebaseApp.firestore();
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
-// const auth = firebase.auth();
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
 
-export { db, timestamp };
+export { timestamp, auth, provider };
+export default db;

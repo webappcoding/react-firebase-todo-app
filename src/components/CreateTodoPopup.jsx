@@ -11,9 +11,8 @@ const popupStyles = makeStyles((theme) => ({
   fabButton: {
     position: "absolute",
     zIndex: 1,
-    top: -30,
-    left: 0,
-    right: 0,
+    right: theme.spacing(2),
+    bottom: theme.spacing(2),
     margin: "0 auto",
   },
 }));
