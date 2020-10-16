@@ -6,6 +6,7 @@ import { TextField } from "formik-material-ui";
 import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
+import { useAuth } from "../hooks/AuthContext";
 
 const TodoSchema = Yup.object().shape({
   todo: Yup.string().min(2, "Too Short!").required("Todo field is required"),
@@ -13,10 +14,13 @@ const TodoSchema = Yup.object().shape({
 });
 
 const AddTodoForm = ({ popupClose }) => {
+  const { currentUser } = useAuth();
   const handleFormSubmit = (values, actions) => {
     db.collection("todos").add({
+      user: currentUser.uid,
       todo: values.todo,
       description: values.description,
+      completed: false,
       timestamp: timestamp(),
     });
     actions.resetForm();

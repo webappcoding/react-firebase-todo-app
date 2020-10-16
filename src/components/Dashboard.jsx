@@ -41,6 +41,7 @@ export default function Dashboard() {
   // fetch data from firebase
   useEffect(() => {
     db.collection("todos")
+      .where("user", "==", currentUser.uid)
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
         setTodos(
@@ -49,7 +50,7 @@ export default function Dashboard() {
           })
         );
       });
-  }, []);
+  }, [currentUser]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);

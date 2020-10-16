@@ -8,6 +8,7 @@ const loaderStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     minHeight: "100vh",
+    height: "100%",
     backgroundColor: theme.palette.grey[100],
   },
 }));

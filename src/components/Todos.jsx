@@ -29,7 +29,9 @@ const Todos = ({ todos }) => {
           <Todo key={todo.id} todo={todo} callBack={handleTasksOpen} />
         ))}
       </List>
-      <TasksPopup open={open} handleClose={handleClose} todo={selectedTodo} />
+      {open && (
+        <TasksPopup open={open} handleClose={handleClose} todo={selectedTodo} />
+      )}
     </React.Fragment>
   );
 };

@@ -8,6 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
+import DocNotFound from "./DocNotFound";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,54 +17,45 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Tasks() {
+export default function Tasks({ tasks }) {
   const classes = useStyles();
-  const [checked, setChecked] = React.useState([0]);
 
   const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
+    console.log(value);
   };
 
   return (
-    <List className={classes.root}>
-      {[0, 1, 2, 3, 5, 6, 7, 8, 23, 21, 11].map((value) => {
-        const labelId = `checkbox-list-label-${value}`;
-
-        return (
-          <ListItem
-            key={value}
-            role={undefined}
-            dense
-            button
-            onClick={handleToggle(value)}
-          >
-            <ListItemIcon>
-              <Checkbox
-                edge="start"
-                // checked={checked.indexOf(value) !== -1}
-                tabIndex={-1}
-                disableRipple
-                inputProps={{ "aria-labelledby": labelId }}
-              />
-            </ListItemIcon>
-            <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
-            <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="comments">
-                <Delete />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        );
-      })}
-    </List>
+    <React.Fragment>
+      {tasks.length ? (
+        <List className={classes.root}>
+          {tasks.map((value) => (
+            <ListItem
+              key={value.id}
+              role={undefined}
+              dense
+              button
+              onClick={handleToggle(value)}
+            >
+              <ListItemIcon>
+                <Checkbox
+                  edge="start"
+                  checked={value.completed}
+                  tabIndex={-1}
+                  disableRipple
+                />
+              </ListItemIcon>
+              <ListItemText primary={value.task} />
+              <ListItemSecondaryAction>
+                <IconButton edge="end" aria-label="comments">
+                  <Delete />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <DocNotFound title="Tasks" />
+      )}
+    </React.Fragment>
   );
 }

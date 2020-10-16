@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import AppBar from "@material-ui/core/AppBar";
@@ -8,6 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import Tasks from "./Tasks";
+import db from "../firebase";
+import FullPageLoader from "./FullPageLoader";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -25,6 +27,26 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const TasksPopup = ({ open, handleClose, todo }) => {
   const classes = useStyles();
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const getTasks = async () => {
+    await db
+      .collection("todos")
+      .doc(todo.id)
+      .collection("tasks")
+      .get()
+      .then((querySnapshot) => {
+        setTasks(
+          querySnapshot.docs.map((doc) => {
+            return { id: doc.id, ...doc.data() };
+          })
+        );
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    getTasks();
+  }, [open]);
 
   return (
     <Dialog
@@ -44,13 +66,13 @@ const TasksPopup = ({ open, handleClose, todo }) => {
             <CloseIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Tasks of {todo.todo}
+            Task's of {todo.todo}
           </Typography>
         </Toolbar>
       </AppBar>
-      <Tasks />
+      {loading ? <FullPageLoader /> : <Tasks tasks={tasks} />}
     </Dialog>
   );
 };
 
-export default TasksPopup;
+export default React.memo(TasksPopup);
